@@ -1,5 +1,6 @@
 package com.example.quizzapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -16,8 +17,10 @@ class QuizzQuestionsActivity : AppCompatActivity(),View.OnClickListener {
     private var mQuestionList : ArrayList<Question>? = null
     private var mSelectedOptionPosition : Int = 0
     private var mCorrectAnswers :Int = 0
+    var mUsername :String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mUsername = intent.getStringExtra("username")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quizz_questions)
         mQuestionList = Constants.getQuestions()
@@ -75,7 +78,11 @@ class QuizzQuestionsActivity : AppCompatActivity(),View.OnClickListener {
                     when{
                         mCurrentPosition <= mQuestionList!!.size -> setQuestion()
                         else -> {
-                        Toast.makeText(this,"You have successfully completed the quizz",Toast.LENGTH_SHORT).show()
+                            var intent = Intent(this,ResultActivity::class.java)
+                            intent.putExtra("username",mUsername)
+                            intent.putExtra("correctanswers",mCorrectAnswers.toString())
+                            intent.putExtra("totalquestions",mQuestionList!!.size.toString())
+                            startActivity(intent)
                     }
 
                 }
